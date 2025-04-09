@@ -1,0 +1,17 @@
+---
+// src/components/HomeComponent.astro
+import NavHeader from './Navheader.astro';
+import Grid from './Grid.astro';
+import type { Database } from '../types/pokemon';
+
+const response = await import('../../database.json');
+const database: Database = response.default;
+const pokemons = database.results;
+---
+
+<div class="min-h-screen">
+    <NavHeader />
+    <div class="container mx-auto">
+        <Grid pokemons={pokemons} />
+    </div>
+</div>

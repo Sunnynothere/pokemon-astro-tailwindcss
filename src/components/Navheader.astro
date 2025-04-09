@@ -1,0 +1,43 @@
+---
+// src/components/NavBar.astro
+import pokemonNav from '../assets/pokemon.logo.png';
+import Search from "./Search.astro";
+---
+
+<nav class="m-2.5 p-2.5">
+    <div class="bg-yellow-500 flex flex-row justify-between items-center p-4.5 rounded-3xl">
+        <div>
+            <img src={pokemonNav.src} class="w-2/5 h-auto"/>
+        </div>
+        <div>
+            <Search />
+        </div>
+        <div>
+            <a href="/pokemon">
+                <button class="h-10 p-4.5 text-sm uppercase tracking-wider cursor-pointer rounded-lg flex items-center">Add Pokemon</button>
+            </a>
+        </div>
+    </div>
+</nav>
+
+<script>
+  // Define the event type
+  interface SearchEvent extends CustomEvent {
+    detail: string;
+  }
+
+  // Add the event listener with proper typing
+  document.addEventListener('search', ((e: SearchEvent) => {
+    const searchTerm = e.detail;
+    const cards = document.querySelectorAll('.pokemon-card');
+
+    cards.forEach((card) => {
+      const name = card.getAttribute('data-name')?.toLowerCase() || '';
+      if (name.includes(searchTerm)) {
+        card.classList.remove('hidden');
+      } else {
+        card.classList.add('hidden');
+      }
+    });
+  }) as EventListener);
+</script>

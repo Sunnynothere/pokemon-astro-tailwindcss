@@ -1,0 +1,25 @@
+---
+// src/pages/pokemon/[id].astro
+import Layout from "../../layouts/Layout.astro";
+import Details from "../../components/Details.astro";
+import type { GetStaticPaths } from 'astro';
+
+export const getStaticPaths = (async () => {
+  const response = await import('../../../database.json');
+  const pokemons = response.default.results;
+  
+  return pokemons.map(pokemon => ({
+    params: { id: pokemon.url.split('/')[6] },
+    props: { pokemon },
+  }));
+}) satisfies GetStaticPaths;
+
+const { id } = Astro.params;
+const { pokemon } = Astro.props;
+---
+
+<Layout>
+  <main class="container mx-auto p-4">
+    <Details id={id} pokemon={pokemon} />
+  </main>
+</Layout>
