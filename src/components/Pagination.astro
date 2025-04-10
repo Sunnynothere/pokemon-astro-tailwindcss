@@ -1,0 +1,32 @@
+---
+interface Props {
+    currentPage: number,
+    totalPages: number,
+    baseUrl: string,
+}
+
+const { currentPage, totalPages, baseUrl } = Astro.props;
+---
+
+<div class="flex justify-center gap-4 mt-8 mb-8">
+    {currentPage > 1 && (
+      <a
+        href={`${baseUrl}?page=${currentPage - 1}`}
+        class="px-4 py-2 bg-yellow-400 text-gray-900 rounded-lg hover:bg-yellow-500 transition-colors"
+      >
+        Previous
+      </a>
+    )}
+    <span class="px-4 py-2 bg-sky-100 rounded-lg">
+      Page {currentPage} of {totalPages}
+    </span>
+    {currentPage < totalPages && (
+      <a
+        href={`${baseUrl}?page=${currentPage + 1}`}
+        class="px-4 py-2 bg-yellow-400 text-gray-900 rounded-lg hover:bg-yellow-500 transition-colors"
+      >
+        Next
+      </a>
+    )}
+</div>
+

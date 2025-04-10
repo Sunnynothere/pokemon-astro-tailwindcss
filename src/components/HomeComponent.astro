@@ -9,7 +9,7 @@ const database: Database = response.default;
 const pokemons = database.results;
 ---
 
-<div class="min-h-screen">
+<div class="min-h-screen w-full h-full inset-0  bg-gradient-to-b from-sky-200 to-sky-400">
     <NavHeader />
     <div class="container mx-auto">
         <Grid pokemons={pokemons} />

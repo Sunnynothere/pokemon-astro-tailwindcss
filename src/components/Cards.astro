@@ -1,6 +1,6 @@
 ---
-// src/components/Card.astro
-import type { PokemonType } from '../types/pokemon';
+import type { PokemonType, PokemonBasic, PokemonTypeString } from '../types/pokemon';
+import { getTypeColor } from '../types/pokemon';
 
 interface Props {
   pokemon: {
@@ -9,10 +9,9 @@ interface Props {
   }
 }
 
-type PokemonTypeString = 
-  | 'normal' | 'fire' | 'water' | 'electric' | 'grass' | 'ice' 
-  | 'fighting' | 'poison' | 'ground' | 'flying' | 'psychic' 
-  | 'bug' | 'rock' | 'ghost' | 'dragon' | 'dark' | 'steel' | 'fairy';
+interface Props {
+  pokemon: PokemonBasic 
+}
 
 const { pokemon } = Astro.props;
 
@@ -23,37 +22,13 @@ const getId = () => {
 // Fetch pokemon details to get types
 const response = await fetch(pokemon.url);
 const pokemonData = await response.json();
-const types: string[] = pokemonData.types.map((type: PokemonType) => type.type.name);
+const types: PokemonTypeString[] = pokemonData.types.map((type: PokemonType) => type.type.name as PokemonTypeString);
 
-const getTypeColor = (type: PokemonTypeString): string => {
-  const colors: Record<PokemonTypeString, string> = {
-    normal: 'bg-gray-400',
-    fire: 'bg-red-500',
-    water: 'bg-blue-500',
-    electric: 'bg-yellow-400',
-    grass: 'bg-green-500',
-    ice: 'bg-blue-200',
-    fighting: 'bg-red-700',
-    poison: 'bg-purple-500',
-    ground: 'bg-yellow-600',
-    flying: 'bg-blue-300',
-    psychic: 'bg-pink-500',
-    bug: 'bg-green-400',
-    rock: 'bg-yellow-800',
-    ghost: 'bg-purple-700',
-    dragon: 'bg-purple-600',
-    dark: 'bg-gray-800',
-    steel: 'bg-gray-500',
-    fairy: 'bg-pink-300'
-  };
-
-  return colors[type] || 'bg-gray-400';
-}
 ---
 
-<a href={`/pokemon/${getId()}`} class="block p-4"> <!-- Added padding around the card -->
-  <div class="pokemon-card w-full max-w-[350px] h-auto mx-auto rounded-lg bg-yellow-400 transform transition-transform hover:scale-105" data-name={pokemon.name}>
-    <div class="text-center bg-gradient-to-r from-[#5e700e] to-[#999929] rounded-t-lg p-4"> <!-- Added padding -->
+<a href={`/pokemon/${getId()}`} class="block p-4"> 
+  <div class="pokemon-card w-full max-w-[350px] h-auto mx-auto rounded-xl bg-yellow-400 transform transition-transform hover:scale-105 border-2 border-yellow-600" data-name={pokemon.name}>
+    <div class="text-center bg-gradient-to-r from-yellow-200 to-yellow-300 rounded-lg p-4 m-3"> 
       <img 
         src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${getId()}.png`}
         alt={pokemon.name}
@@ -61,14 +36,14 @@ const getTypeColor = (type: PokemonTypeString): string => {
       />
     </div>
     
-    <div class="bg-[#dbc76a] p-4 rounded-b-lg"> <!-- Increased padding -->
+    <div class="bg-[#f4e4bc] p-4 rounded-b-lg mx-3 mb-3"> 
       <h2 class="text-center text-lg sm:text-xl py-2 text-black capitalize font-semibold">
         {pokemon.name}
       </h2>
       
-      <div class="flex flex-wrap gap-2 justify-center"> <!-- Added flex-wrap -->
-        {types.map((type: string) => (
-          <span class={`px-3 py-1 rounded text-white text-sm ${getTypeColor(type as PokemonTypeString)}`}>
+      <div class="flex flex-wrap gap-2 justify-center"> 
+        {types.map((type: PokemonTypeString) => (
+          <span class={`px-3 py-1 rounded text-white text-sm ${getTypeColor(type)}`}>
             {type}
           </span>
         ))}
@@ -78,7 +53,6 @@ const getTypeColor = (type: PokemonTypeString): string => {
 </a>
 
 <style>
-  /* Optional: Add smooth transition on hover */
   .pokemon-card {
     transition: all 0.3s ease;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
