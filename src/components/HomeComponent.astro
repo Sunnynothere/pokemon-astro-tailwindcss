@@ -1,17 +1,38 @@
 ---
-// src/components/HomeComponent.astro
 import NavHeader from './Navheader.astro';
 import Grid from './Grid.astro';
+import Pagination from './Pagination.astro';
 import type { Database } from '../types/pokemon';
+
+interface Props {
+    currentPage: number;
+}
+
+const { currentPage } = Astro.props;
 
 const response = await import('../../database.json');
 const database: Database = response.default;
 const pokemons = database.results;
+
+// Pagination logic
+const pokemonPerPage = 6;
+const totalPokemon = pokemons.length;
+const totalPages = Math.ceil(totalPokemon / pokemonPerPage);
+
+// Get Pokemon for current page
+const startIndex = (currentPage - 1) * pokemonPerPage;
+const endIndex = startIndex + pokemonPerPage;
+const currentPokemons = pokemons.slice(startIndex, endIndex);
 ---
 
-<div class="min-h-screen w-full h-full inset-0  bg-gradient-to-b from-sky-200 to-sky-400">
+<div class="min-h-screen w-full h-full inset-0 bg-gradient-to-b from-sky-200 to-sky-400">
     <NavHeader />
     <div class="container mx-auto">
-        <Grid pokemons={pokemons} />
+        <Grid pokemons={currentPokemons} />
+        <Pagination 
+            currentPage={currentPage}
+            totalPages={totalPages}
+            baseUrl="/home"
+        />
     </div>
 </div>

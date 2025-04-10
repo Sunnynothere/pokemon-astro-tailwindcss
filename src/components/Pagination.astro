@@ -12,18 +12,18 @@ const { currentPage, totalPages, baseUrl } = Astro.props;
     {currentPage > 1 && (
       <a
         href={`${baseUrl}?page=${currentPage - 1}`}
-        class="px-4 py-2 bg-yellow-400 text-gray-900 rounded-lg hover:bg-yellow-500 transition-colors"
+        class="px-4 py-2 bg-yellow-400 text-gray-900 rounded-lg hover:bg-yellow-500 transition-colors border-2 border-yellow-600"
       >
         Previous
       </a>
     )}
-    <span class="px-4 py-2 bg-sky-100 rounded-lg">
+    <span class="px-4 py-2 bg-[#f4e4bc] rounded-lg border-2 border-yellow-600">
       Page {currentPage} of {totalPages}
     </span>
     {currentPage < totalPages && (
       <a
         href={`${baseUrl}?page=${currentPage + 1}`}
-        class="px-4 py-2 bg-yellow-400 text-gray-900 rounded-lg hover:bg-yellow-500 transition-colors"
+        class="px-4 py-2 bg-yellow-400 text-gray-900 rounded-lg hover:bg-yellow-500 transition-colors border-2 border-yellow-600"
       >
         Next
       </a>

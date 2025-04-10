@@ -1,3 +1,10 @@
+// Pagination
+export interface PaginationProps {
+    currentPage: number;
+    totalPages: number;
+    baseUrl: string;
+}
+
 // src/types/pokemon.ts
 export interface PokemonType {
   type: {
