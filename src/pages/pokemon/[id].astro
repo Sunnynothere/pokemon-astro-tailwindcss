@@ -1,14 +1,15 @@
 ---
-// src/pages/pokemon/[id].astro
 import Layout from "../../layouts/Layout.astro";
 import Details from "../../components/Details.astro";
 import type { GetStaticPaths } from 'astro';
+import { fetchAllPokemon } from '../../pokemondata/pokemons/allpokemon';
+import type { PokemonBasic } from '../../pokemondata/pokemons/allpokemon';
 
 export const getStaticPaths = (async () => {
-  const response = await import('../../../database.json');
-  const pokemons = response.default.results;
+  const pokemonData = await fetchAllPokemon(0, 60);
+  const pokemons = pokemonData.results;
   
-  return pokemons.map(pokemon => ({
+  return pokemons.map((pokemon: PokemonBasic) => ({
     params: { id: pokemon.url.split('/')[6] },
     props: { pokemon },
   }));

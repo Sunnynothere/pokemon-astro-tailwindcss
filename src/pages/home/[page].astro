@@ -1,0 +1,24 @@
+---
+// /pages/home/[page].astro
+import Layout from "../../layouts/Layout.astro";
+import HomeComponent from "../../components/HomeComponent.astro";
+import type { GetStaticPaths } from 'astro';
+import { getPaginationData } from '../../pokemondata/utils/pagination';
+
+export const getStaticPaths = (() => {
+  const { totalPages } = getPaginationData(1);
+  
+  return Array.from({ length: totalPages - 1 }, (_, i) => i + 2).map(page => ({
+    params: { page: String(page) }
+  }));
+}) satisfies GetStaticPaths;
+
+const { page } = Astro.params;
+const currentPage = Number(page);
+---
+
+<Layout>
+    <main>
+        <HomeComponent currentPage={currentPage}/>
+    </main>
+</Layout>

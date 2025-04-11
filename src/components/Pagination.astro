@@ -1,17 +1,21 @@
 ---
+import { getPaginationData } from '../pokemondata/utils/pagination';
+
 interface Props {
     currentPage: number,
-    totalPages: number,
     baseUrl: string,
 }
 
-const { currentPage, totalPages, baseUrl } = Astro.props;
+const { currentPage } = Astro.props;
+const paginationData = getPaginationData(currentPage);
+const { totalPages, hasNextPage, hasPrevPage, nextPage, prevPage } = paginationData;
+const baseUrl = '/home'; 
 ---
 
 <div class="flex justify-center gap-4 mt-8 mb-8">
-    {currentPage > 1 && (
+    {hasPrevPage && (
       <a
-        href={`${baseUrl}?page=${currentPage - 1}`}
+        href={prevPage === 1 ? baseUrl : `${baseUrl}/${prevPage}`}
         class="px-4 py-2 bg-yellow-400 text-gray-900 rounded-lg hover:bg-yellow-500 transition-colors border-2 border-yellow-600"
       >
         Previous
@@ -20,13 +24,12 @@ const { currentPage, totalPages, baseUrl } = Astro.props;
     <span class="px-4 py-2 bg-[#f4e4bc] rounded-lg border-2 border-yellow-600">
       Page {currentPage} of {totalPages}
     </span>
-    {currentPage < totalPages && (
+    {hasNextPage && (
       <a
-        href={`${baseUrl}?page=${currentPage + 1}`}
+        href={`${baseUrl}/${nextPage}`}
         class="px-4 py-2 bg-yellow-400 text-gray-900 rounded-lg hover:bg-yellow-500 transition-colors border-2 border-yellow-600"
       >
         Next
       </a>
     )}
 </div>
-
